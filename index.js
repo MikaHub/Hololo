@@ -1,20 +1,14 @@
-console.log('testconsole')
 const fs = require("fs");
 const express = require('express')
 const app = express()
 var port = process.env.DEV || 3000;
 
 app.get('/ping', (req, res) => {
-    console.log("here")
     res.send('Hello ping')
 })
 
-app.get("/htmlvideo", function (req, res) {
+app.get("/videostreaming", function (req, res) {
     res.sendFile(__dirname + "/index.html");
-});
-
-app.get("/htmlupload", function (req, res) {
-    res.sendFile(__dirname + "/htmlupload.html");
 });
 
 app.get('/stream', (req, res) => {
@@ -53,17 +47,6 @@ app.get('/stream', (req, res) => {
     // Stream the video chunk to the client
     videoStream.pipe(res);
 })
-
-app.post("/image_upload", function (req, res) {
-    upload_image(req, function (err, data) {
-
-        if (err) {
-            return res.status(404).end(JSON.stringify(err));
-        }
-
-        res.send(data);
-    });
-});
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
