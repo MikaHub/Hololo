@@ -6,9 +6,9 @@ console.log("port:" + port)
 console.log(process.env.PORT)
 console.log(process.env)
 
-app.get('/test', (req, res) => {
+app.get('/ping', (req, res) => {
     console.log("here")
-    res.send('Hello Test')
+    res.send('Hello ping')
 })
 
 app.listen(port, () => {
