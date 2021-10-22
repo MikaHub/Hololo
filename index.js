@@ -2,6 +2,7 @@ console.log('testconsole')
 const express = require('express')
 const app = express()
 var port = process.env.PORT || 3000;
+console.log("port:" + port)
 
 app.get('/test', (req, res) => {
     console.log("here")
