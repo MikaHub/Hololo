@@ -2,10 +2,7 @@ console.log('testconsole')
 const fs = require("fs");
 const express = require('express')
 const app = express()
-var port = process.env.PORT || 3000;
-console.log("port:" + port)
-console.log(process.env.PORT)
-console.log(process.env)
+var port = process.env.DEV || 3000;
 
 app.get('/ping', (req, res) => {
     console.log("here")
@@ -56,6 +53,17 @@ app.get('/stream', (req, res) => {
     // Stream the video chunk to the client
     videoStream.pipe(res);
 })
+
+app.post("/image_upload", function (req, res) {
+    upload_image(req, function (err, data) {
+
+        if (err) {
+            return res.status(404).end(JSON.stringify(err));
+        }
+
+        res.send(data);
+    });
+});
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
