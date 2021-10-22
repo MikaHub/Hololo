@@ -25,8 +25,8 @@ app.get('/stream', (req, res) => {
     }
 
     // get video stats (about 61MB)
-    const videoPath = "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/360/Big_Buck_Bunny_360_10s_1MB.mp4";
-    const videoSize = fs.statSync("https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/360/Big_Buck_Bunny_360_10s_1MB.mp4").size;
+    const videoPath = "video.mp4";
+    const videoSize = fs.statSync("video.mp4").size;
 
     // Parse Range
     // Example: "bytes=32324-"
