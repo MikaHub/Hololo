@@ -9,7 +9,7 @@ var server = http.createServer(function (request, response) {
 });
 
 app.get('/test', (req, res) => {
-    res.send('Hello World')
+    res.send('Hello Test')
 })
 
 var port = process.env.PORT || 3000;
