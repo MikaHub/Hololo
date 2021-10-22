@@ -12,6 +12,10 @@ app.get('/ping', (req, res) => {
     res.send('Hello ping')
 })
 
+app.get("/", function (req, res) {
+    res.sendFile(__dirname + "/index.html");
+});
+
 app.get('/stream', (req, res) => {
 
     // Ensure there is a range given for the video
