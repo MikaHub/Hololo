@@ -5,8 +5,7 @@ const app = express()
 var http = require('http');
 var server = http.createServer(function (request, response) {
     response.writeHead(200, { "Content-Type": "text/plain" });
-    response.send("Le serv est en marche");
-    response.end();
+    response.end("Serv en marche");
 });
 
 app.get('/test', (req, res) => {
