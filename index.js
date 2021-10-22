@@ -5,13 +5,13 @@ const app = express()
 var http = require('http');
 var server = http.createServer(function (request, response) {
     response.writeHead(200, { "Content-Type": "text/plain" });
-    //response.end("Hello World1");
+    response.send("Le serv est en marche");
+    response.end();
 });
 
 app.get('/test', (req, res) => {
     console.log("here")
     res.send('Hello Test')
-    res.end('testend')
 })
 
 var port = process.env.PORT || 3000;
