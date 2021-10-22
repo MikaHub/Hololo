@@ -11,6 +11,7 @@ var server = http.createServer(function (request, response) {
 app.get('/test', (req, res) => {
     console.log("here")
     res.send('Hello Test')
+    res.end('testend')
 })
 
 var port = process.env.PORT || 3000;
