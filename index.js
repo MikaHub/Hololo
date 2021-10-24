@@ -3,10 +3,7 @@ const express = require('express')
 const fileupload = require('express-fileupload')
 const app = express()
 
-console.log(process.env)
-console.log(process.env.PROD)
-
-var port = 'http://hololo.herokuapp.com/'
+var port = process.env.PORT || 3000
 var fileUploaded = null
 
 app.use(fileupload({ useTempFiles: true }))
