@@ -5,7 +5,7 @@ const app = express()
 require('dotenv').config();
 
 var port = process.env.PROD || 3000;
-
+console.log(port)
 var fileUploaded = null
 
 app.use(fileupload({ useTempFiles: true }))
