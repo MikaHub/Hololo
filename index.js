@@ -10,9 +10,9 @@ app.use(fileupload({ useTempFiles: true }))
 
 var cloudinary = require('cloudinary').v2;
 cloudinary.config({
-    cloud_name: process.env.CLOUDNAME,
-    api_key: process.env.APIKEY,
-    api_secret: process.env.APISECRET,
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.API_KEY,
+    api_secret: process.env.API_SECRET,
 });
 
 app.get('/ping', (req, res) => {
