@@ -3,6 +3,7 @@ const express = require('express')
 const fileupload = require('express-fileupload')
 const app = express()
 
+console.log(process.env)
 console.log(process.env.PROD)
 
 var port = process.env.PROD || 3000
