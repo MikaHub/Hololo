@@ -6,7 +6,7 @@ const app = express()
 console.log(process.env)
 console.log(process.env.PROD)
 
-var port = process.env.PROD || 3000
+var port = 'http://hololo.herokuapp.com/'
 var fileUploaded = null
 
 app.use(fileupload({ useTempFiles: true }))
