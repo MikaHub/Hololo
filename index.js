@@ -21,7 +21,7 @@ cloudinary.config({
 app.get('/ping', (req, res) => {
     console.log("hehehe")
     console.log(process.env.CLOUD_NAME)
-    res.send('Hello ping')
+    res.send('Hello ping' + process.env.CLOUD_NAME)
 })
 
 app.get("/videostreaming", function (req, res) {
