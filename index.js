@@ -2,10 +2,10 @@ const fs = require("fs");
 const express = require('express')
 const fileupload = require('express-fileupload')
 const app = express()
-require('dotenv').config();
 
-var port = process.env.PROD;
-console.log(port)
+console.log(process.env.PROD)
+
+var port = process.env.PROD || 3000
 var fileUploaded = null
 
 app.use(fileupload({ useTempFiles: true }))
