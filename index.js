@@ -8,7 +8,9 @@ var fileUploaded = null
 
 app.use(fileupload({ useTempFiles: true }))
 
+console.log("hehehe")
 console.log(process.env.CLOUD_NAME)
+
 var cloudinary = require('cloudinary').v2;
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
