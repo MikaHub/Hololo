@@ -1,7 +1,24 @@
+var port = process.env.PROD || 3000;
+
+console.log(process.env.PROD)
+console.log(process.env.CLOUDNAME)
+console.log(process.env.APIKEY)
+console.log(process.env.APISECRET)
+
 const fs = require("fs");
 const express = require('express')
+const fileupload = require('express-fileupload')
 const app = express()
-var port = process.env.DEV || 3000;
+var fileUploaded = null
+
+app.use(fileupload({ useTempFiles: true }))
+
+var cloudinary = require('cloudinary').v2;
+cloudinary.config({
+    cloud_name: process.env.CLOUDNAME,
+    api_key: process.env.APIKEY,
+    api_secret: process.env.APISECRET,
+});
 
 app.get('/ping', (req, res) => {
     res.send('Hello ping')
@@ -48,6 +65,46 @@ app.get('/stream', (req, res) => {
     videoStream.pipe(res);
 })
 
+app.post("/uploadimage", function (req, res) {
+    const file = req.files.image;
+    cloudinary.uploader.upload(file.tempFilePath, function (err, result) {
+        fileUploaded = result.url
+        res.send({
+            success: true,
+            result
+        })
+    });
+})
+
+app.post("/uploadvideo", function (req, res) {
+    const file = req.files.video;
+    cloudinary.uploader.upload(file.tempFilePath,
+        {
+            resource_type: "video",
+            chunk_size: 6000000,
+            eager: [
+                { width: 300, height: 300, crop: "pad", audio_codec: "none" },
+                { width: 160, height: 100, crop: "crop", gravity: "south", audio_codec: "none" }],
+            eager_async: true,
+        },
+        function (error, result) {
+            fileUploaded = result.url
+            res.send({
+                success: true,
+                result
+            })
+        });
+})
+
+app.get('/get', (req, res) => {
+    if (fileUploaded == null) {
+        res.send("Pas de upload")
+    } else {
+        res.send(fileUploaded)
+    }
+})
+
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
 })
+
