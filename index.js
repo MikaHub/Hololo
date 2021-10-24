@@ -10,6 +10,7 @@ app.use(fileupload({ useTempFiles: true }))
 
 console.log("hehehe")
 console.log(process.env.CLOUD_NAME)
+console.log(process.env)
 
 var cloudinary = require('cloudinary').v2;
 cloudinary.config({
@@ -19,9 +20,7 @@ cloudinary.config({
 });
 
 app.get('/ping', (req, res) => {
-    console.log("hehehe")
-    console.log(process.env.CLOUD_NAME)
-    res.send('Hello ping' + process.env.CLOUD_NAME)
+    res.send('Hello ping')
 })
 
 app.get("/videostreaming", function (req, res) {
