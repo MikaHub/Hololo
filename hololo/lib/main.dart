@@ -11,6 +11,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const MyApp());
@@ -119,6 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
           );
           setState(() {
             _imageFile = pickedFile;
+            _postImage(pickedFile);
           });
         } catch (e) {
           setState(() {
@@ -126,6 +128,19 @@ class _MyHomePageState extends State<MyHomePage> {
           });
         }
       });
+    }
+  }
+
+  _postImage(file) async {
+    try {
+      print(file.path);
+      var response = await http.post(
+          Uri.parse('https://hololo.herokuapp.com/uploadimage'),
+          body: {"image": file.path});
+      print(response.body);
+      print(response.statusCode);
+    } catch (e) {
+      print(e);
     }
   }
 
