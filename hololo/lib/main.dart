@@ -6,6 +6,7 @@
 
 import 'dart:async';
 import 'dart:io';
+import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -120,7 +121,7 @@ class _MyHomePageState extends State<MyHomePage> {
           );
           setState(() {
             _imageFile = pickedFile;
-            _postImage(pickedFile);
+            _postImage(pickedFile?.path);
           });
         } catch (e) {
           setState(() {
@@ -131,17 +132,13 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  _postImage(file) async {
-    try {
-      print(file.path);
-      var response = await http.post(
-          Uri.parse('https://hololo.herokuapp.com/uploadimage'),
-          body: {"image": file.path});
-      print(response.body);
-      print(response.statusCode);
-    } catch (e) {
-      print(e);
-    }
+  _postImage(image) async {
+    var request = http.MultipartRequest(
+        'POST', Uri.parse('https://hololo.herokuapp.com/uploadimage'));
+    request.files.add(http.MultipartFile.fromBytes(
+        'image', File(image).readAsBytesSync(),
+        filename: image.split("/").last));
+    var res = await request.send();
   }
 
   @override
