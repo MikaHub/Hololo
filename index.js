@@ -1,16 +1,18 @@
 const fs = require("fs");
 const express = require('express')
-const fileupload = require('express-fileupload')
 const app = express()
+const fileupload = require('express-fileupload')
+const WebSocket = require('ws');
 
 var port = process.env.PORT || 3000
 var fileUploaded = null
 
+const wsServer = new WebSocket.Server({
+    port: port
+})
+
 app.use(fileupload({ useTempFiles: true }))
 
-console.log("hehehe")
-console.log(process.env.CLOUD_NAME)
-console.log(process.env)
 
 var cloudinary = require('cloudinary').v2;
 cloudinary.config({
@@ -68,6 +70,15 @@ app.post("/uploadimage", function (req, res) {
     const file = req.files.image;
     cloudinary.uploader.upload(file.tempFilePath, function (err, result) {
         fileUploaded = result.url
+
+        wsServer.on('connection', function connection(socket) {
+            socket.send('Welcome New Client!');
+            socket.on('message', function incoming(message) {
+                wsServer.clients.forEach(function (ws) {
+                    ws.send(fileUploaded);
+                });
+            });
+        });
         res.send({
             success: true,
             result
@@ -88,6 +99,14 @@ app.post("/uploadvideo", function (req, res) {
         },
         function (error, result) {
             fileUploaded = result.url
+            wsServer.on('connection', function connection(socket) {
+                socket.send('Welcome New Client!');
+                socket.on('message', function incoming(message) {
+                    wsServer.clients.forEach(function (ws) {
+                        ws.send(fileUploaded);
+                    });
+                });
+            });
             res.send({
                 success: true,
                 result
@@ -99,11 +118,12 @@ app.get('/get', (req, res) => {
     if (fileUploaded == null) {
         res.send("Pas de upload")
     } else {
+        //app.use("/static", express.static('./static'));
+        //res.sendFile(__dirname + "/test.html");
         res.send(fileUploaded)
     }
 })
 
-app.listen(port, () => {
+app.listen(3001, () => {
     console.log(`Example app listening at http://localhost:${port}`)
 })
-
