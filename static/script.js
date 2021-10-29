@@ -1,4 +1,4 @@
-const socket = new WebSocket("wss://hololo.herokuapp.com/get");
+const socket = new WebSocket("ws://hololo.herokuapp.com");
 // Connection opened
 socket.addEventListener('open', function (event) {
     socket.send('Nouvelle valeur');
