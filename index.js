@@ -7,7 +7,7 @@ const WebSocket = require('ws');
 var port = process.env.PORT || 3000
 var fileUploaded = null
 
-const wsServer = new WebSocket.Server({ server: app })
+const wsServer = new WebSocket.Server({ server: "https://hololo.herokuapp.com/" })
 
 app.use(fileupload({ useTempFiles: true }))
 
