@@ -122,6 +122,6 @@ app.get('/get', (req, res) => {
     }
 })
 
-// app.listen(port, () => {
-//     console.log(`Example app listening at http://localhost:${port}`)
-// })
+app.listen(3001, () => {
+    console.log(`Example app listening at http://localhost:${port}`)
+})
