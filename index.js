@@ -7,7 +7,7 @@ const WebSocket = require('ws');
 var port = process.env.PORT || 3000
 var fileUploaded = null
 
-const wsServer = new WebSocket.Server({ server: app })
+const wss = new WebSocket.Server({ server: app })
 
 app.use(fileupload({ useTempFiles: true }))
 
@@ -69,10 +69,10 @@ app.post("/uploadimage", function (req, res) {
     cloudinary.uploader.upload(file.tempFilePath, function (err, result) {
         fileUploaded = result.url
 
-        wsServer.on('connection', function connection(socket) {
+        wss.on('connection', function connection(socket) {
             socket.send('Welcome New Client!');
             socket.on('message', function incoming(message) {
-                wsServer.clients.forEach(function (ws) {
+                wss.clients.forEach(function (ws) {
                     ws.send(fileUploaded);
                 });
             });
@@ -97,10 +97,10 @@ app.post("/uploadvideo", function (req, res) {
         },
         function (error, result) {
             fileUploaded = result.url
-            wsServer.on('connection', function connection(socket) {
+            wss.on('connection', function connection(socket) {
                 socket.send('Welcome New Client!');
                 socket.on('message', function incoming(message) {
-                    wsServer.clients.forEach(function (ws) {
+                    wss.clients.forEach(function (ws) {
                         ws.send(fileUploaded);
                     });
                 });
