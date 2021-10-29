@@ -7,7 +7,7 @@ const WebSocket = require('ws');
 var port = process.env.PORT || 3000
 var fileUploaded = null
 
-const wsServer = new WebSocket.Server({ server: app })
+const wsServer = new WebSocket.Server({ port: port })
 
 app.use(fileupload({ useTempFiles: true }))
 
@@ -122,6 +122,6 @@ app.get('/get', (req, res) => {
     }
 })
 
-app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
-})
+// app.listen(port, () => {
+//     console.log(`Example app listening at http://localhost:${port}`)
+// })
