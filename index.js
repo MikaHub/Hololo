@@ -8,7 +8,7 @@ var port = process.env.PORT || 3000
 var fileUploaded = null
 
 const wsServer = new WebSocket.Server({
-    port: port
+    port: 3001
 })
 
 app.use(fileupload({ useTempFiles: true }))
@@ -124,6 +124,6 @@ app.get('/get', (req, res) => {
     }
 })
 
-app.listen(3001, () => {
+app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
 })
