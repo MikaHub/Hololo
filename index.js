@@ -122,7 +122,6 @@ app.get('/get', (req, res) => {
     }
 })
 
-console.log("here" + port)
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
 })
