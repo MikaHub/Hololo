@@ -7,9 +7,7 @@ const WebSocket = require('ws');
 var port = process.env.PORT || 3000
 var fileUploaded = null
 
-const wsServer = new WebSocket.Server({
-    port: 3001
-})
+const wsServer = new WebSocket.Server({ app })
 
 app.use(fileupload({ useTempFiles: true }))
 
