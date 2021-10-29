@@ -118,9 +118,9 @@ app.get('/get', (req, res) => {
     if (fileUploaded == null) {
         res.send("Pas de upload")
     } else {
-        //app.use("/static", express.static('./static'));
-        //res.sendFile(__dirname + "/test.html");
-        res.send(fileUploaded)
+        app.use("/static", express.static('./static'));
+        res.sendFile(__dirname + "/test.html");
+        //res.send(fileUploaded)
     }
 })
 
