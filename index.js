@@ -1,12 +1,22 @@
 const fs = require("fs");
 const fileupload = require('express-fileupload')
 var fileUploaded = null
-
 var express = require('express');
-const app = express()
+const http = require('http');
+const app = express();
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server);
 
 app.use(fileupload({ useTempFiles: true }))
+app.use("/static", express.static('./static'));
 var port = process.env.PORT || 3000
+
+io.on('connection', (socket) => {
+    socket.on('chat message', (msg) => {
+        console.log('message: ' + msg);
+    });
+});
 
 var cloudinary = require('cloudinary').v2;
 cloudinary.config({
@@ -16,7 +26,7 @@ cloudinary.config({
 });
 
 app.get("/videostreaming", function (req, res) {
-    res.sendFile(__dirname + "/index.html");
+    res.sendFile(__dirname + "/stream.html");
 });
 
 app.get('/stream', (req, res) => {
@@ -58,6 +68,9 @@ app.get('/stream', (req, res) => {
 
 app.post("/uploadimage", function (req, res) {
     const file = req.files.image;
+    setInterval(() => {
+        io.emit("file", fileUploaded);
+    }, 1000);
     cloudinary.uploader.upload(file.tempFilePath, function (err, result) {
         fileUploaded = result.url
         res.send({
@@ -91,9 +104,7 @@ app.get('/get', (req, res) => {
     if (fileUploaded == null) {
         res.send("Pas de upload")
     } else {
-        //app.use("/static", express.static('./static'));
-        //res.sendFile(__dirname + "/test.html");
-        res.send(fileUploaded)
+        res.sendFile(__dirname + "/index.html");
     }
 })
 

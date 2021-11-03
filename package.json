@@ -16,6 +16,7 @@
     "express-fileupload": "^1.2.1",
     "http": "0.0.1-security",
     "nodemon": "^2.0.14",
-    "socket.io": "^4.3.1"
+    "socket.io": "^4.3.1",
+    "socket.io-client": "^3.1.1"
   }
 }
