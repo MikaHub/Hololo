@@ -17,11 +17,11 @@ cloudinary.config({
     api_secret: '2fdoRfjDeVZPeMMW3sk8QsuIPw8',
 });
 
-app.get('/ping', (req, res) => {
+app.get('/', (req, res) => {
     res.send('Hello ping')
 })
 
-app.ws('/ping', function (ws, req) {
+app.ws('/', function (ws, req) {
 
     ws.on('message', function (msg) {
         console.log(msg);
