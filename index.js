@@ -1,31 +1,12 @@
 const fs = require("fs");
 const fileupload = require('express-fileupload')
 var fileUploaded = null
+
+var express = require('express');
+const app = express()
+
 app.use(fileupload({ useTempFiles: true }))
-const express = require('express')
-const { Server } = require('ws');
-//const app = express()
-//const wsServer = new WebSocket.Server({ port: port })
-//const WebSocket = require('ws');
-
 var port = process.env.PORT || 3000
-
-const INDEX = '/test.html';
-
-const app = express().listen(port, () => console.log(`Listening on ${port}`));
-
-const wss = new Server({ server: app });
-
-wss.on('connection', (ws) => {
-    console.log('Client connected');
-    ws.on('close', () => console.log('Client disconnected'));
-});
-
-setInterval(() => {
-    wss.clients.forEach((client) => {
-        client.send("wsh alors");
-    });
-}, 1000);
 
 var cloudinary = require('cloudinary').v2;
 cloudinary.config({
@@ -79,15 +60,6 @@ app.post("/uploadimage", function (req, res) {
     const file = req.files.image;
     cloudinary.uploader.upload(file.tempFilePath, function (err, result) {
         fileUploaded = result.url
-
-        wsServer.on('connection', function connection(socket) {
-            socket.send('Welcome New Client!');
-            socket.on('message', function incoming(message) {
-                wsServer.clients.forEach(function (ws) {
-                    ws.send(fileUploaded);
-                });
-            });
-        });
         res.send({
             success: true,
             result
@@ -95,44 +67,36 @@ app.post("/uploadimage", function (req, res) {
     });
 })
 
-// app.post("/uploadvideo", function (req, res) {
-//     const file = req.files.video;
-//     cloudinary.uploader.upload(file.tempFilePath,
-//         {
-//             resource_type: "video",
-//             chunk_size: 6000000,
-//             eager: [
-//                 { width: 300, height: 300, crop: "pad", audio_codec: "none" },
-//                 { width: 160, height: 100, crop: "crop", gravity: "south", audio_codec: "none" }],
-//             eager_async: true,
-//         },
-//         function (error, result) {
-//             fileUploaded = result.url
-//             wsServer.on('connection', function connection(socket) {
-//                 socket.send('Welcome New Client!');
-//                 socket.on('message', function incoming(message) {
-//                     wsServer.clients.forEach(function (ws) {
-//                         ws.send(fileUploaded);
-//                     });
-//                 });
-//             });
-//             res.send({
-//                 success: true,
-//                 result
-//             })
-//         });
-// })
+app.post("/uploadvideo", function (req, res) {
+    const file = req.files.video;
+    cloudinary.uploader.upload(file.tempFilePath,
+        {
+            resource_type: "video",
+            chunk_size: 6000000,
+            eager: [
+                { width: 300, height: 300, crop: "pad", audio_codec: "none" },
+                { width: 160, height: 100, crop: "crop", gravity: "south", audio_codec: "none" }],
+            eager_async: true,
+        },
+        function (error, result) {
+            fileUploaded = result.url
+            res.send({
+                success: true,
+                result
+            })
+        });
+})
 
-// app.get('/get', (req, res) => {
-//     if (fileUploaded == null) {
-//         res.send("Pas de upload")
-//     } else {
-//         app.use("/static", express.static('./static'));
-//         res.sendFile(__dirname + "/test.html");
-//         //res.send(fileUploaded)
-//     }
-// })
+app.get('/get', (req, res) => {
+    if (fileUploaded == null) {
+        res.send("Pas de upload")
+    } else {
+        //app.use("/static", express.static('./static'));
+        //res.sendFile(__dirname + "/test.html");
+        res.send(fileUploaded)
+    }
+})
 
-// app.listen(port, () => {
-//     console.log(`Example app listening at http://localhost:${port}`)
-// })
+app.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`)
+})
