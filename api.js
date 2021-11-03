@@ -5,7 +5,7 @@ var fileUploaded = null
 var express = require('express');
 var expressWs = require('express-ws');
 const app = express()
-expressWs(app)
+const wsinstance = expressWs(app)
 
 app.use(fileupload({ useTempFiles: true }))
 var port = process.env.PORT || 3000
@@ -17,19 +17,20 @@ cloudinary.config({
     api_secret: '2fdoRfjDeVZPeMMW3sk8QsuIPw8',
 });
 
-app.get('/', (req, res) => {
+app.get('/', (res, ws) => {
     res.send('Hello ping')
-})
-
-app.ws('/', function (ws, req) {
-
-    ws.on('message', function (msg) {
-        console.log(msg);
-    });
     ws.on('connection', (ws) => {
         console.log('Client connected');
         ws.on('close', () => console.log('Client disconnected'));
     });
+})
+
+app.ws('/', function (ws, req) {
+    console.log("ici")
+    ws.on('message', function (msg) {
+        console.log(msg);
+    });
+
 
     setInterval(() => {
         ws.clients.forEach((client) => {
