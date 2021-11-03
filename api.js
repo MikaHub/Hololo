@@ -17,20 +17,14 @@ cloudinary.config({
     api_secret: '2fdoRfjDeVZPeMMW3sk8QsuIPw8',
 });
 
-app.get('/', (res, ws) => {
+app.get('/', (req, res) => {
     res.send('Hello ping')
-    ws.on('connection', (ws) => {
-        console.log('Client connected');
-        ws.on('close', () => console.log('Client disconnected'));
-    });
 })
 
-app.ws('/', function (ws, req) {
-    console.log("ici")
+wsinstance.app.ws('/', function (ws, req) {
     ws.on('message', function (msg) {
         console.log(msg);
     });
-
 
     setInterval(() => {
         ws.clients.forEach((client) => {
