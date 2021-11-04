@@ -139,6 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
       var response = await http.post(
           Uri.parse('https://hololo.herokuapp.com/uploadimage'),
           body: {"image": finalFile});
+
       print(response.body);
       print(response.statusCode);
     } catch (e) {
@@ -146,15 +147,20 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  _postVideo(file) async {
-    File videoFile = File(file.path);
-    try {
-      var response = await http.post(
-          Uri.parse('https://hololo.herokuapp.com/uploadvideo'),
-          body: {"video": videoFile});
-    } catch (e) {
-      print(e);
-    }
+  void _postVideo(file) async {
+    var request = new http.MultipartRequest(
+        "POST", Uri.parse('https://hololo.herokuapp.com/uploadimage'));
+    request.files
+        .add(await http.MultipartFile.fromPath('profile_pic', file.path));
+    request.send().then((response) {
+      http.Response.fromStream(response).then((onValue) {
+        try {
+          print('tout est ok');
+        } catch (e) {
+          print(e);
+        }
+      });
+    });
   }
 
   @override
