@@ -6,7 +6,6 @@
 
 import 'dart:async';
 import 'dart:io';
-import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -102,6 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
           );
           setState(() {
             _imageFileList = pickedFileList;
+            _postVideo(pickedFileList);
           });
         } catch (e) {
           setState(() {
@@ -121,7 +121,7 @@ class _MyHomePageState extends State<MyHomePage> {
           );
           setState(() {
             _imageFile = pickedFile;
-            _postImage(pickedFile?.path);
+            _postImage(pickedFile);
           });
         } catch (e) {
           setState(() {
@@ -132,13 +132,29 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  _postImage(image) async {
-    var request = http.MultipartRequest(
-        'POST', Uri.parse('https://hololo.herokuapp.com/uploadimage'));
-    request.files.add(http.MultipartFile.fromBytes(
-        'image', File(image).readAsBytesSync(),
-        filename: image.split("/").last));
-    var res = await request.send();
+  _postImage(file) async {
+    File finalFile = File(file.path);
+    try {
+      // print(file.path);
+      var response = await http.post(
+          Uri.parse('https://hololo.herokuapp.com/uploadimage'),
+          body: {"image": finalFile});
+      print(response.body);
+      print(response.statusCode);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  _postVideo(file) async {
+    File videoFile = File(file.path);
+    try {
+      var response = await http.post(
+          Uri.parse('https://hololo.herokuapp.com/uploadvideo'),
+          body: {"video": videoFile});
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
