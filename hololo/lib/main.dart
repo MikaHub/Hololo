@@ -6,6 +6,7 @@
 
 import 'dart:async';
 import 'dart:io';
+import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -90,6 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
       final XFile? file = await _picker.pickVideo(
           source: source, maxDuration: const Duration(seconds: 10));
       await _playVideo(file);
+      _postVideo(file?.path);
     } else if (isMultiImage) {
       await _displayPickImageDialog(context!,
           (double? maxWidth, double? maxHeight, int? quality) async {
@@ -101,7 +103,6 @@ class _MyHomePageState extends State<MyHomePage> {
           );
           setState(() {
             _imageFileList = pickedFileList;
-            _postVideo(pickedFileList);
           });
         } catch (e) {
           setState(() {
@@ -121,7 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
           );
           setState(() {
             _imageFile = pickedFile;
-            _postImage(pickedFile);
+            _postImage(pickedFile?.path);
           });
         } catch (e) {
           setState(() {
@@ -132,35 +133,22 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  _postImage(file) async {
-    File finalFile = File(file.path);
-    try {
-      // print(file.path);
-      var response = await http.post(
-          Uri.parse('https://hololo.herokuapp.com/uploadimage'),
-          body: {"image": finalFile});
-
-      print(response.body);
-      print(response.statusCode);
-    } catch (e) {
-      print(e);
-    }
+  _postImage(image) async {
+    var request = http.MultipartRequest(
+        'POST', Uri.parse('https://hololo.herokuapp.com/uploadimage'));
+    request.files.add(http.MultipartFile.fromBytes(
+        'image', File(image).readAsBytesSync(),
+        filename: image.split("/").last));
+    var res = await request.send();
   }
 
-  void _postVideo(file) async {
-    var request = new http.MultipartRequest(
-        "POST", Uri.parse('https://hololo.herokuapp.com/uploadimage'));
-    request.files
-        .add(await http.MultipartFile.fromPath('profile_pic', file.path));
-    request.send().then((response) {
-      http.Response.fromStream(response).then((onValue) {
-        try {
-          print('tout est ok');
-        } catch (e) {
-          print(e);
-        }
-      });
-    });
+  _postVideo(image) async {
+    var request = http.MultipartRequest(
+        'POST', Uri.parse('https://hololo.herokuapp.com/uploadvideo'));
+    request.files.add(http.MultipartFile.fromBytes(
+        'video', File(image).readAsBytesSync(),
+        filename: image.split("/").last));
+    var res = await request.send();
   }
 
   @override
