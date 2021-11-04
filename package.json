@@ -14,9 +14,11 @@
     "cloudinary": "^1.27.1",
     "express": "^4.17.1",
     "express-fileupload": "^1.2.1",
-    "http": "0.0.1-security",
+    "fileupload": "^1.0.0",
+    "http": "^0.0.1-security",
     "nodemon": "^2.0.14",
     "socket.io": "^4.3.1",
-    "socket.io-client": "^3.1.1"
+    "socket.io-client": "^4.3.2",
+    "websocket": "^1.0.34"
   }
 }
