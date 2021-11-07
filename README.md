@@ -1,16 +1,18 @@
-# hololo
+# Hololo
 
-A new Flutter project.
+Hololo est une applicattion mobile créer en Flutter qui permet d'upload une image ou une vidéo, elle va ensuite être retranscrite en format holographique sur notre écran lié au raspberry.
 
-## Getting Started
+## Architecture du projet
 
-This project is a starting point for a Flutter application.
+![alt text](https://res.cloudinary.com/dhffqvijh/image/upload/v1636121068/Capture_d_e%CC%81cran_2021-11-05_a%CC%80_15.03.28_fx3yrn.png)
 
-A few resources to get you started if this is your first Flutter project:
+## Branche main
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+La branche main est notre application Flutter. Une application qui permet à l'utilisateur de pouvoir upload une image ou une vidéo qu'il souhaite transformer en format holographique.
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Branche heroku
+
+La branche heroku permet d'héberger notre site internet (http://hololo.herokuapp.com/) qui va faire office d'api afin d'upload les images/vidéo sur un cloud et aussi être un serveur pour notre raspberry qui va pouvoir se connecter dessus afin de récupérer l'image télécharché via l'utilisateur afin de l'afficher sur l'écran. 
+
+
+
